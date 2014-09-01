@@ -1,0 +1,48 @@
+stat(2)
+  stat(1)
+fstat(2)
+lstat(2)
+
+access(2)
+
+chmod(2)
+fchmod(2)
+  st_mode field of inode
+  chmod(1)
+
+chown(2)
+fchown(2)
+lchown(2)
+  User, Group field of inode
+
+utime(2)
+  atime, mtime field of inode
+  touch(1)
+
+truncate(2)
+ftruncate(2)
+
+link(2)
+symlink(2)
+  ln(1)
+
+unlink(2)
+  unlink(1)
+  rm(1)
+
+rename(2)
+  mv(1)
+
+readlink(2)
+
+mkdir(2)
+  mkdir(1)
+
+rmdir(2)
+  rmdir(1)
+
+opendir(3)
+readdir(3)
+closedir(3)
+  DIR *
+  struct dirent
