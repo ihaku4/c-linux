@@ -1,0 +1,17 @@
+sys/types.h
+sys/stat.h
+dirent.h
+
+struct stat stbuf
+stat(name, &stbuf)
+stbuf.st_mode
+S_IFMT
+S_IFDIR
+
+struct dirent *dp
+DIR *dfd
+opendir(dir)
+readdir(dfd)
+closedir
+
+sprintf
