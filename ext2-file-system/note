@@ -1,0 +1,13 @@
+one inode 128 byte
+one line 16 byte ;002080 ed 41 e8 03 00 04 00 00 8e 18 ff 53 71 18 ff 53
+-> one inode 8 lines. (0x2000-0x207f, 0x2080-0x20ff, 0x2100-)
+
+
+-- operations: mount, umount, od, dumpe2fs, debugfs, dd, mke2fs
+  dd if=/dev/zero of=fs count=256 bs=4K
+  mke2fs fs
+  dumpe2fs fs
+  mount -o loop fs /mnt
+  umount /mnt
+  od -tx1 -Ax fs
+  debugfs fs

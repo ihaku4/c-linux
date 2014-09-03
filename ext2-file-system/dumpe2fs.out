@@ -1,0 +1,48 @@
+dumpe2fs 1.42 (29-Nov-2011)
+Filesystem volume name:   <none>
+Last mounted on:          <not available>
+Filesystem UUID:          ade5aa8a-87c6-4e0c-bbd7-48e4d29b666f
+Filesystem magic number:  0xEF53
+Filesystem revision #:    1 (dynamic)
+Filesystem features:      ext_attr resize_inode dir_index filetype sparse_super
+Filesystem flags:         signed_directory_hash 
+Default mount options:    user_xattr acl
+Filesystem state:         clean
+Errors behavior:          Continue
+Filesystem OS type:       Linux
+Inode count:              128
+Block count:              1024
+Reserved block count:     51
+Free blocks:              986
+Free inodes:              117
+First block:              1
+Block size:               1024
+Fragment size:            1024
+Reserved GDT blocks:      3
+Blocks per group:         8192
+Fragments per group:      8192
+Inodes per group:         128
+Inode blocks per group:   16
+Filesystem created:       Thu Aug 28 19:54:25 2014
+Last mount time:          n/a
+Last write time:          Thu Aug 28 19:56:55 2014
+Mount count:              1
+Maximum mount count:      -1
+Last checked:             Thu Aug 28 19:54:25 2014
+Check interval:           0 (<none>)
+Reserved blocks uid:      0 (user root)
+Reserved blocks gid:      0 (group root)
+First inode:              11
+Inode size:	          128
+Default directory hash:   half_md4
+Directory Hash Seed:      3fcb7f19-ac87-4d75-83dd-c2d3eac7c306
+
+
+Group 0: (Blocks 1-1023)
+  Primary superblock at 1, Group descriptors at 2-2
+  Reserved GDT blocks at 3-5
+  Block bitmap at 6 (+5), Inode bitmap at 7 (+6)
+  Inode table at 8-23 (+7)
+  986 free blocks, 117 free inodes, 2 directories
+  Free blocks: 38-1023
+  Free inodes: 12-128
