@@ -1,0 +1,20 @@
+	\tree(43(41(40(30()())())())(89(69()())()))
+
+delete 40 in tree
+	\tree(43(41(30()())())(89(69()())()))
+
+delete 43 in tree
+	\tree(41(30()())(89(69()())()))
+
+delete 69 in tree
+	\tree(41(30()())(89()()))
+
+delete 89 in tree
+	\tree(41(30()())())
+
+delete 30 in tree
+	\tree(41()())
+
+delete 41 in tree
+	\tree()
+
