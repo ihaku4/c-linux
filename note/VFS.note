@@ -1,0 +1,42 @@
+file_struct
+file
+  f_flags, f_pos, f_count, f_op, f_dentry
+file_operations
+  IIseek, read, write, ioctl, open, release
+inode_operations
+  link, unlink, symlink, mkdir, rmdir, rename, readlink, truncate
+inode
+  i_uid, i_size, i_mode, i_op, i_sb
+dentry cache
+super_block
+  s_type, s_blocksize, s_root
+disk
+
+---------
+PCB(Process Control Block)
+文件描述符表 文件描述符
+  指针
+file 结构体
+  File Status Flag (f_flag)
+  当前读写位置 (f_pos)
+  f_count: Reference Count
+    dup, fork
+    close
+    file_operations
+    dentry
+      open, stat
+      dentry cache
+        inode
+          inode_operations
+          super_block
+            s_root -> a certain dentry
+
+VFS core concept: 
+  these structs:
+    file, dentry, inode, superblock
+
+ext2 VS
+  FAT32, NTFS of Windows: no concept of "inode" or "pemission"
+
+--------- dup and dup2
+open? which
