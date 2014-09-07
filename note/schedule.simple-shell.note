@@ -1,0 +1,5 @@
+read, write : printf, fflush
+fork
+pipe
+string parse
+exec
