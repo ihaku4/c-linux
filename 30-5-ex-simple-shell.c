@@ -30,6 +30,8 @@ void exec_cmd(char *line) {
   memset(in_redirect, 0, MAXLINE);
 
   cmd = trim(line);
+  
+  //printf("\n%s\n", cmd);
 
   // pipe TODO
 
@@ -98,19 +100,40 @@ int main(void)
 {
   char *promote_symbol = "my@ruff shell > ";
   char line[MAXLINE];
+  char *subline;
+  char *subline2;
   int n;
   pid_t pid;
+  pid_t pid2;
   int fd[2];
+  int fd2[2];
+  int fd_inter_sub[2];
 
     while (1) {
+      memset(line, 0, MAXLINE);
+      fputs("my@ruff shell > ", stdout);
+      fflush(stdout);
+      n = read(STDIN_FILENO, line, MAXLINE-1);
+      line[n] = '\0';
+      
+      // pipe
+      subline = strtok(line, "|");
+      subline2 = strtok(NULL, "|");
+
       if (pipe(fd) < 0) {
         perror("pipe");
         exit(1);
       }
-
-      fputs("my@ruff shell > ", stdout);
-      fflush(stdout);
-      n = read(STDIN_FILENO, line, MAXLINE-1);
+      if (subline2 != NULL) {
+        if (pipe(fd2) < 0) {
+          perror("pipe");
+          exit(1);
+        }
+        if (pipe(fd_inter_sub) < 0) {
+         perror("pipe");
+         exit(1);
+        }
+      }
 
       pid = fork();
       if (pid < 0) {
@@ -119,17 +142,44 @@ int main(void)
       }
       if (pid > 0) {
         close(fd[0]);
-        write(fd[1], line, n);
+        write(fd[1], subline, strlen(subline));
         int stat_val;
         waitpid(pid, &stat_val, 0);
       } else {
         close(fd[1]);
-        n = read(fd[0], line, MAXLINE-1);
-        line[n] = '\0';
-        exec_cmd(line);
+        n = read(fd[0], subline, MAXLINE-1);
+        subline[n] = '\0';
+        if (subline2 != NULL) {
+          close(fd_inter_sub[0]);
+          dup2(fd_inter_sub[1], STDOUT_FILENO);
+        }
+        exec_cmd(subline);
         exit(0);
       }
 
+      if (subline2 != NULL) {
+        pid2 = fork();
+        if (pid2 < 0) {
+          perror("fork");
+          exit(1);
+        }
+        if (pid2 > 0) {
+          close(fd2[0]);
+          close(fd_inter_sub[0]);
+          close(fd_inter_sub[1]);
+          write(fd2[1], subline2, strlen(subline2));
+          int stat_val;
+          waitpid(pid2, &stat_val, 0);
+        } else {
+          close(fd2[1]);
+          close(fd_inter_sub[1]);
+          n = read(fd2[0], subline2, MAXLINE-1);
+          subline2[n] = '\0';
+          dup2(fd_inter_sub[0], STDIN_FILENO);
+          exec_cmd(subline2);
+          exit(0);
+        }
+      }
       
     }
     

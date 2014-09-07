@@ -3,3 +3,5 @@ fork
 pipe
 string parse
 exec
+
+IMPORTANT: "fork" should later than "pipe" and "dup2"! or variables will be confused, because these resouces will be re-valued in the new fork.
