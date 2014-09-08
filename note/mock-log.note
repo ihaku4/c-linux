@@ -1,0 +1,41 @@
+tmp char * variable needs to malloc and free? or a fixed array char[], or not?
+
+io
+  fputs
+  write
+
+time types: time_t, struct tm, ...
+  sizeof
+
+asctime: format?
+
+struct tm
+struct tm *
+
+const int *k
+int const *k
+
+sizeof(struct)? memory structure?
+  ?? sizeof(struct tm) == 44 ??
+
+19. 汇编与C之间的关系
+  4. 结构体和联合体
+    Padding, Alignment, Bit-field, 
+    Byte Order, Bit Order
+
+23. 指针
+  5. 指针与结构体
+    struct unit u;
+    struct unit *p = &u;
+    u.num
+    (*p).num
+    p->num
+
+结构体、数组 在内存中的排列：低地址到高地址
+栈的增长：从高地址到低地址
+
+size_t, time_t 具体定义？
+
+vim
+  multi-line edit improve ?
+  record mode
