@@ -1,0 +1,24 @@
+int structure
+  meta characters:
+    \n  : line
+    ;   : 
+    []
+    =
+
+code schedule:
+  struct a ini unit: comment, name, key-value pairs.
+  no io, parse ini format string in array[],
+  io read from file,
+
+struct
+  use as pointer;
+  use as struct type, no need to free;
+  pass to a function as struct type?;
+  pass to a function as pointer of struct type?
+
+Segment Fault when modify a literal string.?
+
+refactor
+  sprintf
+  write
+  readline

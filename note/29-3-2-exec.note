@@ -1,0 +1,34 @@
+exec
+  用户空间代码
+  数据
+  新程序
+  新程序的启动例程
+  新进程
+
+  已打开的文件描述符
+  I/O 重定向
+
+wait waitpid
+  Shell variable: $?
+  思考一下，用什么办法可以清除掉僵尸进程？ (kill 不行)
+  search macro definition in header files.
+    location of headers
+      locate sys/wait.h
+
+------------------------------
+
+/* If WIFEXITED(STATUS), the low-order 8 bits of the status.  */
+#define	__WEXITSTATUS(status)	(((status) & 0xff00) >> 8)
+
+/* If WIFSIGNALED(STATUS), the terminating signal.  */
+#define	__WTERMSIG(status)	((status) & 0x7f)
+
+/* If WIFSTOPPED(STATUS), the signal that stopped the child.  */
+#define	__WSTOPSIG(status)	__WEXITSTATUS(status)
+
+/* Nonzero if STATUS indicates normal termination.  */
+#define	__WIFEXITED(status)	(__WTERMSIG(status) == 0)
+
+/* Nonzero if STATUS indicates termination by a signal.  */
+#define __WIFSIGNALED(status) \
+  (((signed char) (((status) & 0x7f) + 1) >> 1) > 0)

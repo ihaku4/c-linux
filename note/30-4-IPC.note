@@ -1,0 +1,11 @@
+IPC InterProcess Communication
+  pipe
+    when without O_NONBLOCK, 4 cases:
+      write side all closed.
+      write side not close, but not write data.
+      read side all closed.
+      read side not cloes, but not read.
+  文件加锁？
+  进程之间互发信号，SIGUSR1 SIGUSR2?
+  mmap function?
+  SYS V IPC, SYS V UNIX, 消息队列、信号量、共享内存。现在已经基本废弃。
