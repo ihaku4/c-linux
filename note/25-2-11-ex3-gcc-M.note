@@ -1,0 +1,14 @@
+printf
+fputc     byte
+fputs     '\0'
+write?    
+sprintf  
+snprintf  
+fprintf  
+fwrite    ptr, size, num
+
+---- c programming
+  2 things need consider:
+    logic flow
+    memory manage
+  how to separate the two?

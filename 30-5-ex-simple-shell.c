@@ -5,18 +5,20 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include "stringutil.h"
+#include "stringutil.c"
 #define MAXLINE 1000
 
 // command structure: 
 // cmd arguments, < >, |
 
-int is_blank(char c);
-char * trim(char *s);
+//int is_blank(char c);
+//char * trim(char *s);
 void exec_cmd(char *line);
 
-int is_blank(char c) {
-  return c == 0xA || c == 0x20;
-}
+//int is_blank(char c) {
+//  return c == 0xA || c == 0x20;
+//}
 
 void exec_cmd(char *line) {
   char *cmd;
@@ -84,17 +86,17 @@ void exec_cmd(char *line) {
   perror("exec error");
 }
 
-char * trim(char *s)
-{
-  int n;
-  int i;
-  for (; is_blank(*s); s++);
-  n = strlen(s);
-  for (i = n-1; is_blank(s[i]) && i >= 0; i--) {
-    s[i] = 0x0;
-  }
-  return s;
-}
+//char * trim(char *s)
+//{
+//  int n;
+//  int i;
+//  for (; is_blank(*s); s++);
+//  n = strlen(s);
+//  for (i = n-1; is_blank(s[i]) && i >= 0; i--) {
+//    s[i] = 0x0;
+//  }
+//  return s;
+//}
 
 int main(void)
 {
