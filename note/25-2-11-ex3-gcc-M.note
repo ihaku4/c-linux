@@ -12,3 +12,8 @@ fwrite    ptr, size, num
     logic flow
     memory manage
   how to separate the two?
+
+PUZZLE:
+  free(line); // when *line == '\0' -> error ?
+    [SOLVED] line is the pointer of malloc, and you should not change its value before free()!
+  gdb --color ?
