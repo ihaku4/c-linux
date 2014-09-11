@@ -1,0 +1,105 @@
+Shebang
+  #! /bin/sh
+  #! /bin/sed -f
+
+chmod +x script.h
+
+./script.sh
+sh ./script.sh
+
+(cd ..;ls -l)
+cd ..;ls -l
+source ./script.sh
+. ./script.sh
+
+(exit 2)
+echo $?
+
+---------- 31 - 3
+shell syntax
+
+variable convention: ALL_UPPER_CASE_AND_UNDER_SCORE
+  env variable: 
+    printenv
+    it's a concept of all PROCESS.
+  local variable: 
+    set
+    it's a concept of only shell.
+
+define
+  VARNAME=value
+no space between '='
+
+local var -> env var
+  export
+  export VARNAME=value
+  or
+  VARNAME=value
+  export VARNAME
+
+unset VARNAME
+
+${VARNAME}
+$VARNAME
+
+echo $SHELL
+echo $SHELLabc
+echo $SHELL abc
+echo ${SHELL}abc
+
+all Shell vars are *String*.
+
+------------ 31 - 3 - 2 - Globbing - 文件名代换
+  * ? []
+  Wildcard 通配符
+
+ls /dev/ttyS*
+ls ch0?.doc
+ls ch0[1-2].doc
+ls ch0[012][0-9].doc
+Globbing 所匹配的文件名由 Shell 展开, 再传给程序
+
+------------ 31 - 3 - 3 - 命令代换
+  `` $()
+  DATE=`date`
+  echo $DATE
+  DATE=$(date)
+
+  $() -- vs -- ${} -- vs -- $(())
+
+------------ 31 - 3 - 4 - 算术代换
+  $(())
+  VAR=45
+  echo $(($VAR+3))
+
+  operators: +-*/ () 
+  only: integer operation
+
+------------ 31 - 3 - 5 - \
+  echo $SHELL
+  echo \$SHELL
+  echo \\
+  touch \$\ \$
+  touch -hello  # fail
+  touch \-hello  # fail
+  touch ./-hello  # work
+  touch -- -hello  # work
+  ls \
+  > -l
+
+------------ 31 - 3 - 6 - ' single quote
+  ''
+  no single quote allowed in a pair of single quote, because even \ NOT FUNCTION.
+  echo '$SHELL'
+  echo 'ABC\
+  > DE'
+
+------------ 31 - 3 - 7 - " double quote
+  ""
+  ONLY these METAs still function:
+    $VARNAME
+    `cmd`
+    \$
+    \`
+    \"
+    \\
