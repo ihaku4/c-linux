@@ -1,0 +1,31 @@
+INDEX
+  变量
+  文件名代换
+  命令代换
+  算术代换
+  转义字符
+  单引号
+  双引号
+
+fork exec
+内建命令
+  man bash-builtins
+
+  cd, alias, umask, exit, export, shift, if, eval, [, for, while
+  Exit Status, $?
+
+
+数组 vs 指针
+  数组不支持 = ++ 等赋值操作
+  函数原型中的 char *p[] 等价于 char **p
+  char *pa[]
+  char (*pa)[10]
+  char pa[4][10]
+
+函数类型
+函数指针
+
+const
+字符串字面量 .rodata段
+  指针应该是 const char *型的
+
