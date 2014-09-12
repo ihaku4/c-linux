@@ -103,3 +103,118 @@ Globbing 所匹配的文件名由 Shell 展开, 再传给程序
     \`
     \"
     \\
+
+------------ 31 - 4 - bash 启动脚本
+登录 Shell 启动
+  或 --login 参数
+/etc/profile
+~/.bash_profile
+~/.bash_login
+~/.profile
+~/.bash_logout
+
+非登陆 Shell 启动
+~/.bashrc
+
+
+============ Shell Script syntax
+
+-------- test [
+
+!!!!!!!!!!!!!!!!!!!!
+!!!  0 # True   !!!!
+!!!  1 # False  !!!!
+!!!!!!!!!!!!!!!!!!!!
+
+[ -d DIR ]
+[ -f FILE ]
+[ -z STRING ]
+[ -n STRING ]
+[ STRING1 = STRING2 ]
+[ STRING1 != STRING2 ]
+[ ARG1 OP ARG2 ]
+  [ ARG1 -eq ARG2 ]
+  [ ARG1 -ne ARG2 ]
+  [ ARG1 -lt ARG2 ]
+  [ ARG1 -le ARG2 ]
+  [ ARG1 -gt ARG2 ]
+  [ ARG1 -ge ARG2 ]
+[ ! EXPR ]
+[ EXPR1 -a EXPR2 ]
+[ EXPR1 -o EXPR2 ]
+
+----- good habit: wrap var in ""
+[ -d Desktop -a "$VAR" = 'abc' ]
+[ -d Desktop -a $VAR = 'abc' ]  # <-- Error when $VAR not exists.
+  [ -d Desktop -a = 'abc' ]  # <-- Error when $VAR not exists.
+
+
+------------- flow control
+  if then elif else fi
+
+!!!!!!!!!!!!!!!!!!!!
+!!!  0 # True   !!!!
+!!!  1 # False  !!!!
+!!!!!!!!!!!!!!!!!!!!
+
+  ?? difference: && ;
+
+  :
+  /bin/true
+  /bin/false
+
+  && ||
+  ;
+  :
+  -a -o
+
+  test "$VAR" -gt 1 -a "$VAR" -lt 3
+  <=>
+  test "$VAR" -gt 1 && test "$VAR" -lt 3
+
+read
+
+-----------  case ;;
+  ;;
+  )
+  in
+  YES|yes|Yes|y
+
+  /etc/init.d/apache2
+  
+------------ for / do / done
+------------ while / do / done
+
+------------ 位置参数和特殊变量
+  $0
+  $1, $2 ...
+  $#
+  $@
+  $?
+  $$
+
+  shift 3
+
+------------ function
+  }
+  ;
+  foo(){
+  foo
+
+------- usage
+
+for DIR in "$@"; do ....
+if [ $? -ne 0 ]; then ....
+
+
+
+=============== debug Shell Script
+  
+  -n
+  -v
+  -x
+
+sh -x ./script.sh
+#! /bin/sh -x
+set -x
+set +x
