@@ -1,0 +1,19 @@
+shell meta    # when to use ' or " or `` or ${} or ${{}}
+  <Space> \ $ = ; && || ( )
+  if then ..
+  while do ..
+  for in ..
+  case ..
+  cd export ...
+
+" meta
+  $ \$ \` \" \\ `
+
+' meta        # no meta
+
+`` $()
+
+${} $
+
+${{}}
+  number operations
