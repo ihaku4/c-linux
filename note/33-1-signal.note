@@ -1,0 +1,92 @@
+PCB
+SIGINT
+
+Asynchronous
+
+kill -l
+signal.h
+signal(7)
+  Term
+  Core (Core Dump) ==
+  Ign
+  Stop
+  Cont
+
+Ctrl-C SIGINT
+Ctrl-\ SIGQUIT
+Ctrl-Z SIGTSTP  ==
+
+SIGFPE
+SIGSEGV
+
+kill(2)
+kill(1) SIGTERM
+
+SIGALRM
+SIGPIPE
+
+sigaction(2)
+
+Catch
+
+
+* ==: explained later
+
+
+-------------- 33-2-产生信号
+Core Dump ; SIGQUIT
+ls core*
+
+Post-mortem Debug
+Resource Limit
+  PCB ?
+    28-2 p522 
+    process
+    task_struct: Process Descriptor
+      files_struct
+    PCB: Process Control Block
+
+ulimit
+  ulimit -c 1024
+
+ls core*
+  ;;echo core*
+
+kill -SIGSEGV
+kill -SEGV
+kill -11
+
+SIGSEGV vs Segmentation fault
+
+raise() vs kill()
+abort() vs exit()
+
+------------
+SIGPIPE 30-7管道?
+alarm() SIGALRM
+
+----------- 32 - 3 - 1 Block
+Generation
+Delivery
+Pending
+Block
+
+case: 信号产生多次
+  常规信号 -> 只记一次
+  实时信号 -> 一个队列？ ;; == (本章不讨论)
+  sigset_t （信号集）
+    有效无效
+    未决信号集
+    阻塞信号集
+      信号屏蔽字(Signal Mask)
+
+block, pending status of Process:
+  sigprocmask()
+  sigpending()
+
+local sigset_t var CURD:
+  int sigemptyset(sigset_t *set);
+  int sigfillset(sigset_t *set);
+  int sigaddset(sigset_t *set, int signo);
+  int sigdelset(sigset_t *set, int signo);
+  int sigismember(const sigset_t *set, int signo);
