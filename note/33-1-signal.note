@@ -90,3 +90,25 @@ local sigset_t var CURD:
   int sigaddset(sigset_t *set, int signo);
   int sigdelset(sigset_t *set, int signo);
   int sigismember(const sigset_t *set, int signo);
+
+--------------- 捕捉信号
+信号处理函数
+用户空间
+用户程序
+内核态
+用户态
+堆栈空间
+sighandler
+sigreturn
+
+带一个int参数，这样就可以用同一个函数处理多种信号。
+
+man sigaction
+  sa_flags, sa_sigaction -> APUE2e
+
+
+--------------- 重入
+可重入 Reentrant
+
+sig_atomic_t
+volatile
