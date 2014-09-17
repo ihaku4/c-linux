@@ -1,0 +1,11 @@
+terminal a thread
+  returned from thread function
+  pthread_cancel  == ref APUE2e
+  pthread_exit
+
+
+pthread_create
+pthread_exit
+pthread_join
+pthread_cancel *
+pthread_detach
