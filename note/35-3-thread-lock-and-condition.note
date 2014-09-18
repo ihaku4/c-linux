@@ -1,0 +1,10 @@
+pthread_mutex_lock
+pthread_mutex_trylock
+pthread_mutex_unlock :  can a thread unlock when it did not locked?
+
+pthread_cond_timedwait
+pthread_cond_wait
+pthread_cond_broadcast :  triggered by another thread which did not locked it.
+pthread_cond_signal :  triggered by another thread which did not locked it.
+
+* there is no man page for these functions?
