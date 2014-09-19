@@ -1,0 +1,14 @@
+condition variable
+  timewait
+  wait
+    释放 Mutex, 阻塞等待
+    被唤醒时：重新获得 Mutex 并返回
+  broadcast
+  signal
+    唤醒
+semaphore
+  wait
+    获得资源, semaphore -1, == 0 则阻塞
+  trywait
+  post
+    释放资源, semaphore +1, 唤醒
