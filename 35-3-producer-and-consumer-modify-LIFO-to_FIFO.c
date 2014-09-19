@@ -7,7 +7,10 @@ struct msg {
   int num;
 };
 
+void print_list(struct msg *head);
+
 struct msg *head;
+struct msg *tail;
 pthread_cond_t has_product = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -37,8 +40,14 @@ void *producer(void *p)
     mp->num = rand() % 1000 + 1;
     printf("Produce %d\n", mp->num);
     pthread_mutex_lock(&lock);
-    mp->next = head;
-    head = mp;
+
+    if (tail != NULL) tail->next = mp;
+    tail = mp;
+    tail->next = NULL;
+    if (head == NULL) head = tail;
+
+    print_list(head);
+
     pthread_mutex_unlock(&lock);
     pthread_cond_signal(&has_product);
     int sec = rand() % 5;
@@ -56,4 +65,12 @@ int main(int argc, char *argv[])
   pthread_join(pid, NULL);
   pthread_join(cid, NULL);
   return 0;
+}
+
+void print_list(struct msg *head)
+{
+  for (; head != NULL; head = head->next) {
+    printf("%d->", head->num);
+  }
+  printf("NULL\n");
 }
