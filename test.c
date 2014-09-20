@@ -19,5 +19,10 @@ void main()
     printf("%s\n", token);
     token = strtok_r(NULL, "=", &saveptr);
     printf("%s\n", token);
+
+    int t = 1234;
+    void *arg = &t;
+    printf("*arg = %d\n", *((int *) arg));
+
     return;
 }
