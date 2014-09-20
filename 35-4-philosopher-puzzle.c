@@ -32,7 +32,12 @@ void *a_philosopher_s_life(void *arg)
       chopstick_status[index] = index;
       printf("Philosopher %d fetches chopstick %d\n", index, index);
       // right chopstick
-      pthread_mutex_lock(chopstick_r);
+      if (0 != pthread_mutex_trylock(chopstick_r)) {
+        pthread_mutex_unlock(chopstick_l);
+        chopstick_status[index] = -1;
+        printf("Philosopher %d releases chopstick %d\n", index, index);
+        continue;
+      }
       chopstick_status[index_next] = index;
       printf("Philosopher %d fetches chopstick %d\n", index, index_next);
     // eating
