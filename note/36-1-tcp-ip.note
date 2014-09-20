@@ -1,0 +1,30 @@
+段(segment) : 传输层
+数据报(datagram) : 网络层
+帧(frame) : 链路层
+
+集线器(Hub): 物理层
+交换机: 链路层
+路由器: 网络层(兼有交换机功能)（IP 协议是构成 Internet 的基础）
+
+以太网协议
+令牌网协议
+
+point-to-point
+end-to-end
+
+以太网驱动程序
+IP ARP RARP
+ICMP IGMP TCP UDP
+
+
+--------------- 36-2-以太网(RFC 894)帧格式
+MAC 地址 48bit
+ifconfig
+IP ARP RARP
+CRC
+
+46 ~ 1500
+PAD
+MTU
+分片 fragmentation
+  ifconfig
