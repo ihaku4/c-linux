@@ -1,5 +1,5 @@
-段(segment) : 传输层
-数据报(datagram) : 网络层
+段(segment) : 传输层 : TCP/UDP
+数据报(datagram) : 网络层 : IP
 帧(frame) : 链路层
 
 集线器(Hub): 物理层
@@ -108,3 +108,42 @@ UDP TFTP(trivial FTP)
 TCP FTP
 TOS: priority. (depredated)
 TTL: Time to live. unit: "hop"("跳"). 
+
+
+
+------------------------------ tcp
+segment format
+
+TCP head {20,60}
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF [options] [data] ... 
+<---> <---> <---------> <---------> ^< X> <---> <---> <--->
+|     |     |           |           || |  |     |     紧急指针
+|     |     |           |           || |  |     Checksum
+|     |     |           |           || |  窗口大小
+|     |     |           |           || URG, ACK, PSH, RST, SYN, FIN 控制位
+|     |     |           |           |reserved 6 bit
+|     |     |           |           首部长度
+|     |     |           确认序号
+|     |     序号
+|     port dest
+port src
+
+
+SYN mms three-way-handshake
+ACK
+FIN
+
+RST ;Connection Refused.
+
+序号 +1 per Byte of [date] (include FIN&SYN without data)
+
+piggyback
+
+一问一答
+全双工 full-duplex
+半双工 half-duplex
+一套序号 vs 各自维护一套序号
+
+关闭连接需要 4 个段 vs 建立连接 3 次握手
+  服务器的 *应答* 和 *关闭连接请求* 通常不合并在一个段中
+  case: 连接半关闭
