@@ -28,3 +28,83 @@ PAD
 MTU
 分片 fragmentation
   ifconfig
+
+
+---------------- 36 - 6 - UDP segment format
+Ethernet frame head:    {14} (Byte)
+  body: {46, 1500}
+arp head: {14}
+  arp request: {28}
+ip head:                {20,} 
+udp head:               {8}
+
+
+Ethernet {14}
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+<---------------> <---------------> <--->
+dest addr         src addr          type
+
+
+ARP head {14}, requet/response {28}
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF 
+<---------------> <---------------> <---> 
+|                 |                 frame type
+|                 MAC addr src 
+MAC addr dest
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 
+<---> <---> <> <> <---> <---------------> <---------> <---------------> <---------> 
+|     |     |  |  |     |                 |           |                 IP dest
+|     |     |  |  |     |                 |           Ethernet addr dest
+|     |     |  |  |     |                 IP src
+|     |     |  |  |     Ethernet addr src
+|     |     |  |  op
+|     |     |  协议地址长度
+|     |     硬件地址长度
+|     protocol type
+hardware type
+
+
+IP {20,}  ;4 Byte * N
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF ...
+^^ <> <---> <---> ^---> <> <> <---> <---------> <---------> options... and data
+^^ ^  ^     ^     ^     ^  ^  ^     ^           ^            
+|| |  |     |     !     |  |  |     |           |            
+|| |  |     |     !     |  |  |     |           dest ip addr
+|| |  |     |     !     |  |  |     src ip addr
+|| |  |     |     !     |  |  首部校验和
+|| |  |     |     !     |  Protocol
+|| |  |     |     !     TTL
+|| |  |     |     标志 3bit
+|| |  |     |     片位移 13 bit after '标志'
+|| |  |     标识
+|| |  Length(all)
+|| TOS
+|Length(head) (unit: 4 Bytes)
+Edition
+
+
+UDP {8}
+FF FF FF FF FF FF FF FF 
+<---> <---> <---> <--->
+|     |     |     UDP 校验和
+|     |     UDP Length
+|     dest port
+src port
+
+
+
+----------- noun
+检验和: (Checksum)
+  sha md5
+  man md5sum
+
+
+可靠性
+  送达
+  顺序
+  缓冲区
+
+UDP TFTP(trivial FTP)
+TCP FTP
+TOS: priority. (depredated)
+TTL: Time to live. unit: "hop"("跳"). 

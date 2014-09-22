@@ -3,14 +3,14 @@
 
 void thr_sem_post(sem_t *sem)
 {
-//  printf("%d---", sem_post(sem));
-//  fflush(stdout);
-//  printf("%d---", sem_post(sem));
-//  fflush(stdout);
-//  printf("%d---", sem_post(sem));
-//  fflush(stdout);
-//  printf("%d---", sem_post(sem));
-//  fflush(stdout);
+  printf("%d---", sem_post(sem));
+  fflush(stdout);
+  printf("%d---", sem_post(sem));
+  fflush(stdout);
+  printf("%d---", sem_post(sem));
+  fflush(stdout);
+  printf("%d---", sem_post(sem));
+  fflush(stdout);
 }
 
 int main(void)
