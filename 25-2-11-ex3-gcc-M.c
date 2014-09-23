@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "stringutil.h"
-#include "stringutil.c"
 #define LENGHTH 1000
 #define SEARCH_PATH_N 2
 

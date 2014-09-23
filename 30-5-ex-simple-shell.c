@@ -6,7 +6,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "stringutil.h"
-#include "stringutil.c"
 #define MAXLINE 1000
 
 // command structure: 
@@ -16,6 +15,7 @@ void exec_cmd(char *line);
 int run_if_builtin(const char *cmd[]);
 void parse_command(char *line, char *arguments[]);
 int exec_if_builtin_cmd(char *line);
+void redirect_io(char *line);
 
 int exec_if_builtin_cmd(char *line)
 {
@@ -96,7 +96,6 @@ void parse_command(char *line, char *arguments[])
   arguments[0] = strtok(cmd, " ");
   i = 1;
   while ((arguments[i] = strtok(NULL, " ")) != NULL) i++;
-  return arguments;
 }
 
 int run_if_builtin(const char *cmd[])

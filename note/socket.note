@@ -34,6 +34,39 @@ ntohs
   sin_port
 
 
+------ client.c
+connect
+
+netstat
+
+
+------ wrap.c ERROR HANDLINIG
+accept
+  ECONNABORTED EINTR
+    again:
+bind
+connect
+listen
+socket
+read
+  EINTR
+    again:
+write
+  EINTR
+    again:
+close
+
+
 -------- PUZZLE
 accept: sockaddr and socklen_t ?
   what is the buffer? how can it too small? and overflow?
+
+
+
+---- static
+  function
+  variable out function
+  variable in function
+
+  external and static (Chapter 19, 20)
+
