@@ -24,5 +24,10 @@ void main()
     void *arg = &t;
     printf("*arg = %d\n", *((int *) arg));
 
+    printf("before convert endian: %x\n", t);
+    printf("after convert endian hton: %x\n", htonl(t));
+    printf("after convert endian ntoh: %x\n", ntohl(t));
+
+
     return;
 }
