@@ -1,3 +1,4 @@
+all: server client
 gcc-m:
 	gcc stringutil.c 25-2-11-ex3-gcc-M.c
 simple-shell:
