@@ -18,6 +18,7 @@ int main(void)
   char buf[MAXLINE];
   char str[INET_ADDRSTRLEN];
   int i, n;
+  pid_t pid;
 
   listenfd = Socket(AF_INET, SOCK_STREAM, 0);
 
@@ -35,17 +36,31 @@ int main(void)
     cliaddr_len = sizeof(cliaddr);
     connfd = Accept(listenfd, (struct sockaddr *)&cliaddr, &cliaddr_len);
 
-    n = Read(connfd, buf, MAXLINE);
-    printf("received from %s at PORT %d\n",
-        inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str)),
-        ntohs(cliaddr.sin_port));
+    pid = fork();
+    if (pid != 0) {
+      // XXX close connfd ?
+      // TODO handle SIGCHLD
+      // TODO call wait -> clear zombie
+      continue;
+    } else {
+      // XXX close listenfd ?
+      while (1) {
+        n = Read(connfd, buf, MAXLINE);
+        if (0 == n) {
+          printf("the other side has been closed.\n");
+          break;
+        }
+        printf("received from %s at PORT %d\n",
+            inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str)),
+            ntohs(cliaddr.sin_port));
 
-    for (i = 0; i < n; i++)
-      buf[i] = toupper(buf[i]);
-    Write(connfd, buf, n);
-    sleep(2);
-    // this not work if client not read again?
-    Write(connfd, "more msgs...", 12);
-    close(connfd);
+        for (i = 0; i < n; i++)
+          buf[i] = toupper(buf[i]);
+        Write(connfd, buf, n);
+      }
+      Close(connfd);
+    }
   }
+
+  return 0;
 }
