@@ -5,10 +5,20 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <signal.h>
 #include "wrap.h"
 
 #define MAXLINE 80
 #define SERV_PORT 8000
+
+void sig_chld(int signo) 
+{
+  int status;
+  int pid;
+  pid = wait(&status);
+  printf("child finished: pid = %d, status = %x, exit status = %d\n", pid, status, WEXITSTATUS(status));
+  fflush(stdout);
+}
 
 int main(void)
 {
@@ -19,6 +29,7 @@ int main(void)
   char str[INET_ADDRSTRLEN];
   int i, n;
   pid_t pid;
+  struct sigaction newact, oldact;
 
   listenfd = Socket(AF_INET, SOCK_STREAM, 0);
 
@@ -39,11 +50,18 @@ int main(void)
     pid = fork();
     if (pid != 0) {
       // XXX close connfd ?
-      // TODO handle SIGCHLD
-      // TODO call wait -> clear zombie
+      Close(connfd);
+      // XXX handle SIGCHLD
+      // XXX call wait -> clear zombie
+      newact.sa_handler = sig_chld;
+      sigemptyset(&newact.sa_mask);
+      newact.sa_flags = 0;
+      sigaction(SIGCHLD, &newact, &oldact);
+      //pause();
       continue;
     } else {
       // XXX close listenfd ?
+      Close(listenfd);
       while (1) {
         n = Read(connfd, buf, MAXLINE);
         if (0 == n) {
