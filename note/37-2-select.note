@@ -3,3 +3,21 @@ FD_ZERO
 FD_SET
 FD_ISSET
 FD_CLR
+
+client[]
+  connfd
+  -1
+rset allset
+  listenfd
+  connfd
+
+TODO 
+  read, write return, **socket tcp status
+  socket status:
+    wrote data
+    only connected, no data sent
+    disconect
+  what happens when kernel handling tcp data, while app is reading in the meanwhile? app can read when buffer is unempty or ??
+  [TCP] what happens when sock1 sent data, but sock2 receive wrong data and ACK-ed. what will sock1 do now?? Or it is garenteed by "checksum" there is no wrong data?
+
+? FD_SETSIZE

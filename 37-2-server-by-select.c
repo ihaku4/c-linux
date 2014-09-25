@@ -79,8 +79,7 @@ int main(int argc, char **argv)
         } else {
           int j;
           for (j = 0; j < n; j++)
-            buf[j] = 
-              toupper(buf[j]);
+            buf[j] = toupper(buf[j]);
           Write(sockfd, buf, n);
         }
         if (--nready == 0)
