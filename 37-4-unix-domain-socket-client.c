@@ -4,8 +4,11 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <errno.h>
+#include <unistd.h>
+#include "wrap.h"
 
 #define CLI_PATH "/var/tmp/" /* +5 for pid = 14 chars */
+#define MAXLINE 80
 
 /*
  * Create a client endpoint and connect to a server.
@@ -48,4 +51,21 @@ errout:
   close(fd);
   errno = err;
   return(rval);
+}
+
+int main(void)
+{
+  int fd;
+  int n;
+  char buf[MAXLINE];
+
+  fd = cli_conn("test.socket");
+  while (fgets(buf, MAXLINE, stdin) != NULL) {
+    Write(fd, buf, strlen(buf));
+    n = Read(fd, buf, MAXLINE);
+    Write(STDOUT_FILENO, buf, n);
+  }
+
+  Close(fd);
+  return 0;
 }

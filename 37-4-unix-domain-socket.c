@@ -22,5 +22,7 @@ int main(void)
     exit(1);
   }
   printf("UNIX domain socket bound\n");
+  unlink("foo.socket");
+  printf("UNIX domain socket unlinked\n");
   exit(0);
 }

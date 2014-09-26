@@ -1,10 +1,13 @@
+#include <stdio.h>
 #include <stddef.h>
 #include <sys/stat.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <errno.h>
+#include "wrap.h"
 
 #define QLEN 10
+#define MAXLINE 80
 
 /*
  * Create a server endpoint of a connection.
@@ -79,4 +82,17 @@ errout:
   close(clifd);
   errno = err;
   return(rval);
+}
+
+int main(void)
+{
+  int fd;
+  int n;
+  char buf[MAXLINE];
+
+  fd = serv_accept(serv_listen("test.socket"), NULL);
+  while (1) {
+    n = Read(fd, buf, MAXLINE);
+    Write(fd, buf, n);
+  }
 }
