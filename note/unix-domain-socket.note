@@ -1,0 +1,7 @@
+action
+  socket
+  bind
+
+data
+  fd: int
+  un: sockaddr_un

@@ -1,0 +1,14 @@
+socket
+
+  un.sun_path ? fixed length array?
+  un.sun_family
+*unlink: un
+bind: un
+
+  un.sun_path
+  name
+  un.sun_family
+connect: un
+
+fd: socket bind connect
+  what these operations do on fd? especially connect seems differ from socket and bind.

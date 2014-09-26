@@ -1,4 +1,5 @@
-all: server client
+tcp: server client
+udp: udp-server udp-client
 gcc-m:
 	gcc stringutil.c 25-2-11-ex3-gcc-M.c
 simple-shell:
@@ -7,6 +8,10 @@ server:
 	gcc wrap.c 37-2-server.c -o server.out
 client:
 	gcc wrap.c 37-2-client.c -o client.out
+udp-server:
+	gcc wrap.c 37-3-udp-server.c -o server.out
+udp-client:
+	gcc wrap.c 37-3-udp-client.c -o client.out
 clean:
 	@echo "cleaning project"
 	-rm a.out *.o *.out

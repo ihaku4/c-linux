@@ -1,0 +1,14 @@
+------------------ listen
+socket
+unlink: name
+bind: name (un.sun_path)
+listen
+
+------------------ accept
+accept
+unlink
+
+time_t
+struct stat
+stat(2)
+S_ISSOCK
