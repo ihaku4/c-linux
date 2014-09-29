@@ -12,6 +12,8 @@ udp-server:
 	gcc wrap.c 37-3-udp-server.c -o server.out
 udp-client:
 	gcc wrap.c 37-3-udp-client.c -o client.out
+web-server:
+	gcc wrap.c 37-5-web-server.c -o web-server.out
 clean:
 	@echo "cleaning project"
 	-rm a.out *.o *.out

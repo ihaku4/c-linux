@@ -17,6 +17,13 @@
  *   exec CGI & dup2 & write out
  */
 
+/*
+ * TODO detect file type
+ * TODO 404 page
+ * TODO detect executable file
+ *
+ */
+
 #define MAXLINE 1000
 
 //struct config {
@@ -73,6 +80,20 @@ void sig_chld(int signo)
 //  }
 //}
 
+void get_file_type(const char *path, char *filetype)
+{
+  
+}
+
+int is_file_executable(const char *path)
+{
+  struct stat buf;
+  int stat(path, &buf);
+  // S_IXUSR(0100) seems not enough. S_IXGRP S_IXOTH
+  return buf.st_mode & 0111;
+    
+}
+
 int main(void)
 {
   struct sockaddr_in servaddr, cliaddr;
@@ -87,8 +108,11 @@ int main(void)
   char *path;
   char html_content[MAXLINE];
   FILE *fp;
-  char web_root[MAXLINE] = ".";
-  char response_head[MAXLINE] = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n";
+  char web_root[MAXLINE] = "/home/durrrr/c-learning/var/www";
+  char index[MAXLINE] = "/index.html";
+  char filetype[MAXLINE];
+  char RESPONSE_HEAD_TEMPLATE[MAXLINE] = "HTTP/1.1 200 OK\r\nContent-Type: %s\r\n\r\n";
+  char response_head[MAXLINE];
   listenfd = Socket(AF_INET, SOCK_STREAM, 0);
 
   // allow creating socket fd with same port but different ip.
@@ -111,10 +135,7 @@ int main(void)
 
     pid = fork();
     if (pid != 0) {
-      // XXX close connfd ?
       Close(connfd);
-      // XXX handle SIGCHLD
-      // XXX call wait -> clear zombie
       newact.sa_handler = sig_chld;
       sigemptyset(&newact.sa_mask);
       newact.sa_flags = 0;
@@ -122,7 +143,6 @@ int main(void)
       //pause();
       continue;
     } else {
-      // XXX close listenfd ?
       Close(listenfd);
       n = Read(connfd, buf, MAXLINE);
       if (0 == n) {
@@ -144,7 +164,11 @@ int main(void)
         web_root[len+1] = 0;
       }
       len = strlen(web_root);
-      memcpy(web_root+len, path, strlen(path)+1);
+      if (strcmp(path, "/") == 0) {
+        memcpy(web_root+len, index, strlen(index)+1);
+      } else {
+        memcpy(web_root+len, path, strlen(path)+1);
+      }
 
       printf("request file: %s\n", web_root);
       fp = fopen(web_root, "r");
@@ -152,6 +176,10 @@ int main(void)
         perror("open file fail");
         exit(1);
       }
+
+      get_file_type(web_root, filetype);
+      fprintf(RESPONSE_HEAD_TEMPLATE, response_head, filetype);
+
       i = 0;
       while ((c = fgetc(fp)) != EOF) {
         html_content[i++] = (unsigned char) c;
