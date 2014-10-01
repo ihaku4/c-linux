@@ -23,15 +23,15 @@
 
 /*
  * TODO detect file type
- * TODO 404 page
- * TODO detect executable file
  *
  */
 
+/* 
 //struct config {
 //  uint16_t port;
 //  char server_path[MAXLINE];
 //}
+*/
 typedef struct {
   uint16_t port;
   char server_path[MAXLINE];
@@ -44,6 +44,7 @@ void get_file_type(const char *path, char *filetype);
 int is_file_executable(const char *path);
 void response(int connfd, const char *target_path);
 
+/* 
 //config_info get_config();
 //void Listen(config_info config);
 //int Accept(int listenfd);
@@ -57,6 +58,59 @@ void response(int connfd, const char *target_path);
 //    ci.port = 8000;
 //    server_path = "./httpd.ini"; // is this char retain after return?
 //}
+*/
+
+int main(void)
+{
+  struct sockaddr_in servaddr, cliaddr;
+  socklen_t cliaddr_len;
+  int listenfd, connfd;
+  pid_t pid;
+  struct sigaction newact, oldact;
+  char str[INET_ADDRSTRLEN];
+
+  listenfd = Socket(AF_INET, SOCK_STREAM, 0);
+
+  // allow creating socket fd with same port but different ip.
+  int opt = 1;
+  setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+
+  bzero(&servaddr, sizeof(servaddr));
+  servaddr.sin_family = AF_INET;
+  servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+  servaddr.sin_port = htons(SERV_PORT);
+
+  Bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
+
+  Listen(listenfd, 20);
+
+  printf("Accepting connections ...\n");
+  while (1) {
+    cliaddr_len = sizeof(cliaddr);
+    connfd = Accept(listenfd, (struct sockaddr *)&cliaddr, &cliaddr_len);
+    printf("\n----------------------");
+    printf("received from %s at PORT %d\n",
+        inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str)),
+        ntohs(cliaddr.sin_port));
+
+    pid = fork();
+    if (pid != 0) {
+      Close(connfd);
+
+      newact.sa_handler = sig_chld;
+      sigemptyset(&newact.sa_mask);
+      newact.sa_flags = 0;
+      sigaction(SIGCHLD, &newact, &oldact);
+      continue;
+    } else {
+      Close(listenfd);
+      handle_request(connfd);
+      Close(connfd);
+      exit(0);
+    }
+  }
+  return 0;
+}
 
 void sig_chld(int signo) 
 {
@@ -67,6 +121,7 @@ void sig_chld(int signo)
   fflush(stdout);
 }
 
+/* 
 //void start_server()
 //{
 //  int connfd;
@@ -88,6 +143,7 @@ void sig_chld(int signo)
 //    }
 //  }
 //}
+*/
 
 void get_file_type(const char *path, char *filetype)
 {
@@ -135,6 +191,7 @@ void response(int connfd, const char *target_path)
   char html_content[MAXLINE];
   char filetype[MAXLINE];
   char RESPONSE_HEAD_TEMPLATE[MAXLINE] = "HTTP/1.1 200 OK\r\nContent-Type: %s\r\n\r\n";
+  char RESPONSE_HEAD_TEMPLATE_404[MAXLINE] = "HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\n\r\n<html><body>request file not found</body></html>";
   char response_head[MAXLINE];
   FILE *fp;
 
@@ -142,32 +199,38 @@ void response(int connfd, const char *target_path)
   fp = fopen(target_path, "r");
   if (fp == NULL) {
     perror("open file fail");
-    exit(1);
+    //exit(1);
+    Write(connfd, RESPONSE_HEAD_TEMPLATE_404, strlen(RESPONSE_HEAD_TEMPLATE_404));
+    return;
   }
 
   // response header
-    // 404 200 TODO
+    // 404 200 
     // detect file type, and whether CGI
   get_file_type(target_path, filetype);
   //sprintf(response_head, RESPONSE_HEAD_TEMPLATE, filetype);
   sprintf(response_head, RESPONSE_HEAD_TEMPLATE, "text/plain");
+  Write(connfd, response_head, strlen(response_head));
 
   // response body
-  i = 0;
-  while ((c = fgetc(fp)) != EOF) {
-    html_content[i++] = (unsigned char) c;
+  if (is_file_executable(target_path)) {
+    dup2(connfd, STDOUT_FILENO);
+    execl(target_path, NULL);
+    return;
+  } else {
+    i = 0;
+    while ((c = fgetc(fp)) != EOF) {
+      html_content[i++] = (unsigned char) c;
+    }
+    Write(connfd, html_content, i);
   }
-
-  Write(connfd, response_head, strlen(response_head));
-  Write(connfd, html_content, i);
-  
 }
 
 void handle_request(int connfd)
 {
   int n;
   char buf[MAXLINE];
-  char target_path[MAXLINE] = "/home/durrrr/c-learning/var/www";
+  char target_path[MAXLINE] = "./var/www";
 
   // read request
   n = Read(connfd, buf, MAXLINE);
@@ -185,57 +248,4 @@ void handle_request(int connfd)
   response(connfd, target_path);
 
   Close(connfd);
-}
-
-int main(void)
-{
-  struct sockaddr_in servaddr, cliaddr;
-  socklen_t cliaddr_len;
-  int listenfd, connfd;
-  pid_t pid;
-  struct sigaction newact, oldact;
-  char str[INET_ADDRSTRLEN];
-
-  listenfd = Socket(AF_INET, SOCK_STREAM, 0);
-
-  // allow creating socket fd with same port but different ip.
-  int opt = 1;
-  setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-
-  bzero(&servaddr, sizeof(servaddr));
-  servaddr.sin_family = AF_INET;
-  servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-  servaddr.sin_port = htons(SERV_PORT);
-
-  Bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
-
-  Listen(listenfd, 20);
-
-  printf("Accepting connections ...\n");
-  while (1) {
-    cliaddr_len = sizeof(cliaddr);
-    connfd = Accept(listenfd, (struct sockaddr *)&cliaddr, &cliaddr_len);
-    printf("\n----------------------");
-    printf("received from %s at PORT %d\n",
-        inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str)),
-        ntohs(cliaddr.sin_port));
-
-    pid = fork();
-    if (pid != 0) {
-      Close(connfd);
-
-      newact.sa_handler = sig_chld;
-      sigemptyset(&newact.sa_mask);
-      newact.sa_flags = 0;
-      sigaction(SIGCHLD, &newact, &oldact);
-      continue;
-    } else {
-      Close(listenfd);
-
-      handle_request(connfd);
-      exit(0);
-    }
-  }
-
-  return 0;
 }
