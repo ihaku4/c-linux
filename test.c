@@ -38,6 +38,18 @@ void test()
   printf("%x\n", EOF);
   printf("%x\n", NULL);
 
+  char tempstring[50]={0};
+  char* otherstring;
+  int d=5;
+  float j=3.14;
+
+  otherstring="other";
+  sprintf(tempstring,"%f%s%d",j,otherstring,d);
+  printf("%s\n",tempstring);
+  printf("%d\n",tempstring[13]);
+  printf("%d %d\n",'0', 'a');
+  printf("0x%.4x 0x%x\n",'0', 'a');
+
   return;
 }
 
@@ -98,7 +110,7 @@ void test_io()
 
 void main()
 {
-//  test();
-  test_io();
+  test();
+//  test_io();
 }
 
